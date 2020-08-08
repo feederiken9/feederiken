@@ -21,11 +21,12 @@ jobs:
       uses: jodersky/setup-mill@v0.1.3
     - name: Build assembly
       run: mill app.assembly
+    - run: mv out/app/assembly/dest/out.jar feederiken.jar
     - name: Upload assembly
       uses: actions/upload-artifact@v2
       with:
-        name: feederiken.jar
-        path: out/app/assembly/dest/out.jar
+        name: Executable Assembly
+        path: feederiken.jar
 
   publish_release:
 
@@ -37,7 +38,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v2
         with:
-          name: feederiken.jar
+          name: Executable Assembly
       - uses: actions/create-release@v1.1.1
         id: create_gh_release
         env:
@@ -51,5 +52,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_gh_release.outputs.upload_url }}
           asset_path: /home/runner/work/feederiken/feederiken/feederiken.jar
-          asset_name: feederiken.jar
+          asset_name: Executable Assembly
           asset_content_type: application/java-archive
